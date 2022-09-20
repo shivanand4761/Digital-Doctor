@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiUrl = 'https://34.222.138.8:8080/appointmentservice';
+const apiUrl = 'http://34.222.138.8:8080/appointmentservice';
 class AppointmentService {
     getSlots(email) {
         // return axios.get('http://localhost:3000/availableSlots');

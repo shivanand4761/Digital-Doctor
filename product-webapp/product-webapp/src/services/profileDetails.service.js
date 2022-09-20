@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiUrl = "https://34.222.138.8:8080/userservice";
+const apiUrl = "http://34.222.138.8:8080/userservice";
 class ProfileDetailsService {
   // get the profile details for doctor
   doctorProfile() {
