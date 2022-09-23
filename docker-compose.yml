@@ -1,10 +1,10 @@
-version: "3.3"
+version: "3.9"
 services:
   config-server:
     container_name: config-server
     build: config-server/
-    hostname: localhost
-    network_mode: host
+    #hostname: localhost
+    #network_mode: host
     ports:
       - 8888:8888
     restart: always
@@ -13,22 +13,27 @@ services:
     container_name: eureka-server
     build: eureka-server/
     restart: always
-    network_mode: host
-    hostname: localhost
+    #network_mode: host
+    #hostname: localhost
     ports:
       - 8761:8761
+    environment:
+      - server_config=config-server
     depends_on:
       - config-server
 
   api-gateway:
     container_name: api-gateway
     build: api-gateway/
+    environment:
+      - server_config=config-server
+      - server_eureka=eureka-server
     depends_on:
       - eureka-server
       - config-server
     restart: always
-    network_mode: host
-    hostname: localhost
+    #network_mode: host
+    #hostname: localhost
     ports:
       - 8080:8080
 
@@ -37,8 +42,8 @@ services:
     image: mysql:latest
     container_name: mysql
     restart: always
-    hostname: localhost
-    network_mode: host
+    #hostname: localhost
+    #network_mode: host
     ports:
       - 3306:3306
     environment:
@@ -49,8 +54,8 @@ services:
   mongodb:
     image: mongo:latest
     container_name: mongo-container
-    network_mode: host
-    hostname: localhost
+    #network_mode: host
+    #hostname: localhost
     ports:
       - 27017:27017
 
@@ -58,10 +63,14 @@ services:
   user-service:
     container_name: user-service
     build: user-service/
-    hostname: localhost
-    network_mode: host
+    #hostname: localhost
+    #network_mode: host
     ports:
       - 8075:8075
+    environment:
+      - server_config=config-server
+      - server_eureka=eureka-server
+      - server_mongodb=mongodb
     depends_on:
       - mongodb
       - eureka-server
@@ -71,10 +80,13 @@ services:
   authentication-service:
     container_name: authentication-service
     build: authentication-service/
-    hostname: localhost
-    network_mode: host
+    #hostname: localhost
+    #network_mode: host
     ports:
       - 8095:8095
+    environment:
+      - server_config=config-server
+      - server_eureka=eureka-server
     depends_on:
       - eureka-server
       - config-server
@@ -83,10 +95,14 @@ services:
   appointment-service:
     container_name: appointment-service
     build: appointment-service/
-    hostname: localhost
-    network_mode: host
+    #hostname: localhost
+    #network_mode: host
     ports:
       - 8060:8060
+    environment:
+      - server_config=config-server
+      - server_eureka=eureka-server
+      - server_mongodb=mongodb
     depends_on:
       - mongodb
       - eureka-server
@@ -96,10 +112,13 @@ services:
   email-service:
     container_name: email-service
     build: email-service/
-    hostname: localhost
-    network_mode: host
+    #hostname: localhost
+    #network_mode: host
     ports:
       - 7777:7777
+    environment:
+      - server_config=config-server
+      - server_eureka=eureka-server
     depends_on:
       - eureka-server
       - config-server
@@ -108,9 +127,9 @@ services:
   product-webapp:
     container_name: product-webapp
     build: product-webapp/
-    hostname: localhost
+    #hostname: localhost
     restart: always
-    network_mode: host
+    #network_mode: host
     ports:
       - 3000:3000
    
